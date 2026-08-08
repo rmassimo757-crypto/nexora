@@ -1421,9 +1421,8 @@
 
     <script>
         // ================================================================
-        // CONFIGURAZIONE SUPABASE
+        // CONFIGURAZIONE SUPABASE - SOSTITUISCI CON LE TUE CREDENZIALI
         // ================================================================
-        // ⚠️ SOSTITUISCI CON LE TUE CREDENZIALI SUPABASE ⚠️
         const SUPABASE_URL = 'https://yzvksxgiuqhhvrqoqjak.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU';
 
@@ -1617,8 +1616,7 @@
             try {
                 console.log('📝 Tentativo di registrazione per:', email);
 
-                // Registra l'utente con Supabase Auth
-                const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+                const { data, error } = await supabaseClient.auth.signUp({
                     email: email,
                     password: password,
                     options: {
@@ -1631,38 +1629,34 @@
                     }
                 });
 
-                if (authError) {
-                    console.error('❌ Errore Auth:', authError);
-                    throw authError;
+                if (error) {
+                    console.error('❌ Errore Auth:', error);
+                    throw error;
                 }
 
-                console.log('✅ Auth completato:', authData.user?.id);
+                console.log('✅ Registrazione completata!', data.user?.id);
 
-                if (authData.user) {
-                    // Inserisci i dati nella tabella profiles
-                    const { error: profileError } = await supabaseClient
+                if (data.user) {
+                    // Attendi qualche secondo per il trigger
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    // Verifica che il profilo sia stato creato
+                    const { data: profile, error: profileError } = await supabaseClient
                         .from('profiles')
-                        .insert({
-                            id: authData.user.id,
-                            email: email,
-                            first_name: firstName,
-                            last_name: lastName,
-                            birthdate: birthdate,
-                            phone: phone || null,
-                            created_at: new Date().toISOString()
-                        });
+                        .select('*')
+                        .eq('id', data.user.id)
+                        .single();
 
                     if (profileError) {
-                        console.error('❌ Errore inserimento profilo:', profileError);
-                        // Continua comunque - l'utente è registrato
+                        console.warn('⚠️ Profilo non trovato, verrà creato al prossimo accesso');
                     } else {
-                        console.log('✅ Profilo creato con successo');
+                        console.log('✅ Profilo trovato:', profile);
                     }
 
-                    return { user: authData.user, error: null };
+                    return { user: data.user, error: null };
                 }
 
-                return { user: null, error: new Error('Registrazione fallita - nessun utente creato') };
+                return { user: null, error: new Error('Registrazione fallita') };
 
             } catch (error) {
                 console.error('❌ Errore registrazione:', error);
@@ -1731,7 +1725,6 @@
             const birthdate = regBirthdate.value;
             const phone = regPhone.value.trim();
 
-            // Validazioni
             if (!validateEmail(email)) {
                 document.getElementById('regEmailError').classList.add('show');
                 regEmail.classList.add('error');
@@ -1773,7 +1766,6 @@
                 return;
             }
 
-            // Registra su Supabase
             const result = await registerUser(email, password, firstName, lastName, birthdate, phone);
 
             setLoading(false);
@@ -1782,7 +1774,7 @@
                 if (result.error.message && result.error.message.includes('User already registered')) {
                     showAuthError('❌ Questa email è già registrata. Effettua il login.');
                 } else {
-                    showAuthError('❌ Errore durante la registrazione: ' + (result.error.message || 'Errore sconosciuto'));
+                    showAuthError('❌ Errore: ' + (result.error.message || 'Errore sconosciuto'));
                 }
                 return;
             }
@@ -1828,7 +1820,6 @@
                 return;
             }
 
-            // Login su Supabase
             const result = await loginUser(email, password);
 
             setLoading(false);
@@ -1839,7 +1830,6 @@
             }
 
             if (result.user) {
-                // Recupera il profilo completo
                 const profileResult = await getUserProfile(result.user.id);
 
                 currentUser = {
@@ -2173,7 +2163,6 @@
         // AVVIO
         // ================================================================
         (async function init() {
-            // Verifica sessione Supabase
             const sessionRestored = await checkSession();
 
             if (!sessionRestored) {
