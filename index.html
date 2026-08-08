@@ -1421,7 +1421,7 @@
 
     <script>
         // ================================================================
-        // CONFIGURAZIONE SUPABASE - SOSTITUISCI CON LE TUE CREDENZIALI
+        // CONFIGURAZIONE SUPABASE - CON LE TUE CREDENZIALI CORRETTE
         // ================================================================
         const SUPABASE_URL = 'https://yzvksxgiuqhhvrqoqjak.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU';
@@ -1639,19 +1639,6 @@
                 if (data.user) {
                     // Attendi qualche secondo per il trigger
                     await new Promise(resolve => setTimeout(resolve, 1500));
-
-                    // Verifica che il profilo sia stato creato
-                    const { data: profile, error: profileError } = await supabaseClient
-                        .from('profiles')
-                        .select('*')
-                        .eq('id', data.user.id)
-                        .single();
-
-                    if (profileError) {
-                        console.warn('⚠️ Profilo non trovato, verrà creato al prossimo accesso');
-                    } else {
-                        console.log('✅ Profilo trovato:', profile);
-                    }
 
                     return { user: data.user, error: null };
                 }
