@@ -1428,7 +1428,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU';
 
         // ================================================================
-        // INIZIALIZZA SUPABASE (usa un nome diverso per evitare conflitti)
+        // INIZIALIZZA SUPABASE
         // ================================================================
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -1615,7 +1615,9 @@
         // ---- REGISTRAZIONE SUPABASE ----
         async function registerUser(email, password, firstName, lastName, birthdate, phone) {
             try {
-                // 1. Registra l'utente con Supabase Auth
+                console.log('📝 Tentativo di registrazione per:', email);
+
+                // Registra l'utente con Supabase Auth
                 const { data: authData, error: authError } = await supabaseClient.auth.signUp({
                     email: email,
                     password: password,
@@ -1629,13 +1631,18 @@
                     }
                 });
 
-                if (authError) throw authError;
+                if (authError) {
+                    console.error('❌ Errore Auth:', authError);
+                    throw authError;
+                }
+
+                console.log('✅ Auth completato:', authData.user?.id);
 
                 if (authData.user) {
-                    // 2. Inserisci i dati nella tabella profiles
+                    // Inserisci i dati nella tabella profiles
                     const { error: profileError } = await supabaseClient
                         .from('profiles')
-                        .insert([{
+                        .insert({
                             id: authData.user.id,
                             email: email,
                             first_name: firstName,
@@ -1643,19 +1650,22 @@
                             birthdate: birthdate,
                             phone: phone || null,
                             created_at: new Date().toISOString()
-                        }]);
+                        });
 
                     if (profileError) {
-                        console.error('Errore inserimento profilo:', profileError);
+                        console.error('❌ Errore inserimento profilo:', profileError);
+                        // Continua comunque - l'utente è registrato
+                    } else {
+                        console.log('✅ Profilo creato con successo');
                     }
 
                     return { user: authData.user, error: null };
                 }
 
-                return { user: null, error: new Error('Registrazione fallita') };
+                return { user: null, error: new Error('Registrazione fallita - nessun utente creato') };
 
             } catch (error) {
-                console.error('Errore registrazione:', error);
+                console.error('❌ Errore registrazione:', error);
                 return { user: null, error: error };
             }
         }
