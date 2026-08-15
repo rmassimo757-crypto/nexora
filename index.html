@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyShop - E-commerce</title>
 
+  <title>MyShop</title>
+
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -20,10 +22,93 @@
       color: #222;
     }
 
+    /* =========================
+       PAGINA DI ACCESSO
+    ========================= */
+
+    #authPage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #111, #333);
+      padding: 20px;
+    }
+
+    .auth-box {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .auth-box h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .auth-box .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .auth-box input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+
+    .auth-button {
+      width: 100%;
+      padding: 14px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .auth-button:hover {
+      background: #333;
+    }
+
+    .switch-auth {
+      text-align: center;
+      margin-top: 20px;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .switch-auth:hover {
+      color: #000;
+    }
+
+    #authMessage {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* =========================
+       SHOP
+    ========================= */
+
+    #shopPage {
+      display: none;
+    }
+
     header {
       background: #111;
       color: white;
       padding: 18px 40px;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -33,40 +118,29 @@
       font-size: 24px;
     }
 
-    nav {
+    .header-right {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 15px;
     }
 
-    button {
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
+    #userEmail {
       font-size: 14px;
     }
 
-    .login-btn {
-      background: white;
-      color: #111;
-    }
-
-    .logout-btn {
+    .logout-button {
       background: #e74c3c;
       color: white;
-      display: none;
-    }
-
-    .user-email {
-      font-size: 14px;
-      display: none;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     .hero {
+      background: white;
       text-align: center;
       padding: 60px 20px;
-      background: white;
     }
 
     .hero h2 {
@@ -82,15 +156,19 @@
       max-width: 1100px;
       margin: 40px auto;
       padding: 0 20px;
+
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
       gap: 25px;
     }
 
     .product {
       background: white;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
+
       box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     }
 
@@ -105,486 +183,678 @@
     }
 
     .product h3 {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .price {
-      font-weight: bold;
       font-size: 20px;
+      font-weight: bold;
       margin-bottom: 15px;
     }
 
     .add-cart {
       width: 100%;
+      padding: 12px;
       background: #111;
       color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     .cart {
       position: fixed;
       right: 20px;
       bottom: 20px;
+
       background: #111;
       color: white;
+
       padding: 15px 20px;
       border-radius: 50px;
+
       cursor: pointer;
-    }
-
-    /* MODALE LOGIN */
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .modal-box {
-      background: white;
-      width: 100%;
-      max-width: 400px;
-      padding: 30px;
-      border-radius: 15px;
-      position: relative;
-    }
-
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: transparent;
-      font-size: 20px;
-    }
-
-    .modal-box h2 {
-      margin-bottom: 20px;
-    }
-
-    .modal-box input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .submit-btn {
-      width: 100%;
-      background: #111;
-      color: white;
-      margin-top: 5px;
-    }
-
-    .switch {
-      text-align: center;
-      margin-top: 15px;
-      color: #555;
-      cursor: pointer;
-    }
-
-    .message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
     }
 
     footer {
+      background: #111;
+      color: white;
       text-align: center;
       padding: 30px;
       margin-top: 50px;
-      background: #111;
-      color: white;
     }
+
+    @media (max-width: 600px) {
+
+      header {
+        padding: 15px 20px;
+      }
+
+      header h1 {
+        font-size: 20px;
+      }
+
+      #userEmail {
+        display: none;
+      }
+
+      .hero h2 {
+        font-size: 30px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>MyShop</h1>
 
-  <nav>
-    <span class="user-email" id="userEmail"></span>
+  <!-- ==================================================
+       PAGINA LOGIN / REGISTRAZIONE
+  =================================================== -->
 
-    <button class="login-btn" id="loginButton" onclick="openModal()">
-      Accedi / Registrati
-    </button>
+  <section id="authPage">
 
-    <button class="logout-btn" id="logoutButton" onclick="logout()">
-      Esci
-    </button>
-  </nav>
-</header>
+    <div class="auth-box">
 
-<section class="hero">
-  <h2>Benvenuto su MyShop</h2>
-  <p>Scopri i nostri prodotti.</p>
-</section>
+      <h1 id="authTitle">
+        Accedi
+      </h1>
 
-<section class="products">
+      <p class="subtitle" id="authSubtitle">
+        Accedi al tuo account per entrare nello shop
+      </p>
 
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80">
+      <input
+        type="email"
+        id="email"
+        placeholder="Email"
+        autocomplete="email"
+      >
 
-    <div class="product-content">
-      <h3>Orologio</h3>
-      <p class="price">€49,99</p>
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        autocomplete="current-password"
+      >
 
-      <button class="add-cart" onclick="addToCart('Orologio', 49.99)">
-        Aggiungi al carrello
+      <button
+        class="auth-button"
+        id="authButton"
+        onclick="handleAuth()"
+      >
+        Accedi
       </button>
+
+      <p
+        class="switch-auth"
+        id="switchAuth"
+        onclick="switchAuthMode()"
+      >
+        Non hai un account? Registrati
+      </p>
+
+      <div id="authMessage"></div>
+
     </div>
-  </div>
 
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80">
+  </section>
 
-    <div class="product-content">
-      <h3>Scarpe</h3>
-      <p class="price">€79,99</p>
 
-      <button class="add-cart" onclick="addToCart('Scarpe', 79.99)">
-        Aggiungi al carrello
-      </button>
+  <!-- ==================================================
+       SHOP
+       NON VIENE MOSTRATO FINCHÉ L'UTENTE NON È LOGGATO
+  =================================================== -->
+
+  <section id="shopPage">
+
+    <header>
+
+      <h1>MyShop</h1>
+
+      <div class="header-right">
+
+        <span id="userEmail"></span>
+
+        <button
+          class="logout-button"
+          onclick="logout()"
+        >
+          Esci
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <section class="hero">
+
+      <h2>Benvenuto su MyShop</h2>
+
+      <p>
+        Scopri i nostri prodotti.
+      </p>
+
+    </section>
+
+
+    <!-- PRODOTTI -->
+
+    <section class="products">
+
+      <div class="product">
+
+        <img
+          src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"
+          alt="Orologio"
+        >
+
+        <div class="product-content">
+
+          <h3>Orologio</h3>
+
+          <p class="price">
+            €49,99
+          </p>
+
+          <button
+            class="add-cart"
+            onclick="addToCart('Orologio', 49.99)"
+          >
+            Aggiungi al carrello
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="product">
+
+        <img
+          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+          alt="Scarpe"
+        >
+
+        <div class="product-content">
+
+          <h3>Scarpe</h3>
+
+          <p class="price">
+            €79,99
+          </p>
+
+          <button
+            class="add-cart"
+            onclick="addToCart('Scarpe', 79.99)"
+          >
+            Aggiungi al carrello
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="product">
+
+        <img
+          src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80"
+          alt="Fotocamera"
+        >
+
+        <div class="product-content">
+
+          <h3>Fotocamera</h3>
+
+          <p class="price">
+            €199,99
+          </p>
+
+          <button
+            class="add-cart"
+            onclick="addToCart('Fotocamera', 199.99)"
+          >
+            Aggiungi al carrello
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CARRELLO -->
+
+    <div
+      class="cart"
+      onclick="showCart()"
+    >
+      🛒 Carrello:
+      <span id="cartCount">0</span>
     </div>
-  </div>
-
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80">
-
-    <div class="product-content">
-      <h3>Fotocamera</h3>
-      <p class="price">€199,99</p>
-
-      <button class="add-cart" onclick="addToCart('Fotocamera', 199.99)">
-        Aggiungi al carrello
-      </button>
-    </div>
-  </div>
-
-</section>
-
-<div class="cart" onclick="showCart()">
-  🛒 Carrello: <span id="cartCount">0</span>
-</div>
-
-<footer>
-  © 2026 MyShop
-</footer>
 
 
-<!-- MODALE LOGIN -->
+    <footer>
+      © 2026 MyShop
+    </footer>
 
-<div class="modal" id="authModal">
-
-  <div class="modal-box">
-
-    <button class="close" onclick="closeModal()">×</button>
-
-    <h2 id="authTitle">Accedi</h2>
-
-    <input
-      type="email"
-      id="email"
-      placeholder="La tua email"
-    >
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-    >
-
-    <button
-      class="submit-btn"
-      onclick="handleAuth()"
-      id="authSubmit"
-    >
-      Accedi
-    </button>
-
-    <p
-      class="switch"
-      onclick="switchAuth()"
-      id="switchText"
-    >
-      Non hai un account? Registrati
-    </p>
-
-    <div class="message" id="authMessage"></div>
-
-  </div>
-
-</div>
+  </section>
 
 
-<script>
+  <script>
 
-  // =====================================================
-  // SUPABASE
-  // =====================================================
+    /* ==================================================
+       SUPABASE
+    ================================================== */
 
-  const SUPABASE_URL = "https://yzvksxgiuqhhvrqoqjak.supabase.co";
+    const SUPABASE_URL =
+      "https://yzvksxgiuqhhvrqoqjak.supabase.co";
 
-  const SUPABASE_ANON_KEY =
-    "sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU";
-
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU";
 
 
-  // =====================================================
-  // LOGIN / REGISTRAZIONE
-  // =====================================================
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
 
-  let isLogin = true;
 
-  function openModal() {
-    document.getElementById("authModal").style.display = "flex";
-  }
+    /* ==================================================
+       MODALITÀ LOGIN / REGISTRAZIONE
+    ================================================== */
 
-  function closeModal() {
-    document.getElementById("authModal").style.display = "none";
-    document.getElementById("authMessage").textContent = "";
-  }
+    let loginMode = true;
 
-  function switchAuth() {
 
-    isLogin = !isLogin;
+    function switchAuthMode() {
 
-    const title = document.getElementById("authTitle");
-    const submit = document.getElementById("authSubmit");
-    const switchText = document.getElementById("switchText");
+      loginMode = !loginMode;
 
-    if (isLogin) {
+      const title =
+        document.getElementById("authTitle");
 
-      title.textContent = "Accedi";
-      submit.textContent = "Accedi";
+      const subtitle =
+        document.getElementById("authSubtitle");
 
-      switchText.textContent =
-        "Non hai un account? Registrati";
+      const button =
+        document.getElementById("authButton");
 
-    } else {
+      const switchText =
+        document.getElementById("switchAuth");
 
-      title.textContent = "Registrati";
-      submit.textContent = "Crea account";
+      const password =
+        document.getElementById("password");
 
-      switchText.textContent =
-        "Hai già un account? Accedi";
+
+      if (loginMode) {
+
+        title.textContent = "Accedi";
+
+        subtitle.textContent =
+          "Accedi al tuo account per entrare nello shop";
+
+        button.textContent =
+          "Accedi";
+
+        switchText.textContent =
+          "Non hai un account? Registrati";
+
+        password.autocomplete =
+          "current-password";
+
+      } else {
+
+        title.textContent =
+          "Crea un account";
+
+        subtitle.textContent =
+          "Registrati gratuitamente per entrare nello shop";
+
+        button.textContent =
+          "Registrati";
+
+        switchText.textContent =
+          "Hai già un account? Accedi";
+
+        password.autocomplete =
+          "new-password";
+
+      }
+
+
+      document.getElementById("authMessage").textContent = "";
+
     }
-  }
 
 
-  async function handleAuth() {
+    /* ==================================================
+       LOGIN / REGISTRAZIONE
+    ================================================== */
 
-    const email =
-      document.getElementById("email").value.trim();
+    async function handleAuth() {
 
-    const password =
-      document.getElementById("password").value;
+      const email =
+        document.getElementById("email")
+        .value
+        .trim();
 
-    const message =
-      document.getElementById("authMessage");
+      const password =
+        document.getElementById("password")
+        .value;
 
-    if (!email || !password) {
-
-      message.textContent =
-        "Inserisci email e password.";
-
-      return;
-    }
-
-    message.textContent = "Attendi...";
+      const message =
+        document.getElementById("authMessage");
 
 
-    // LOGIN
-
-    if (isLogin) {
-
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-
-      if (error) {
+      if (!email || !password) {
 
         message.textContent =
-          "Errore: " + error.message;
+          "Inserisci email e password.";
+
+        message.style.color = "red";
 
         return;
       }
 
-      message.textContent =
-        "Accesso effettuato!";
 
-      setTimeout(() => {
-        closeModal();
-      }, 800);
-
-    }
-
-
-    // REGISTRAZIONE
-
-    else {
-
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-          email: email,
-          password: password
-        });
-
-      if (error) {
+      if (password.length < 6) {
 
         message.textContent =
-          "Errore: " + error.message;
+          "La password deve avere almeno 6 caratteri.";
+
+        message.style.color = "red";
 
         return;
       }
 
+
       message.textContent =
-        "Account creato! Controlla la tua email per confermare l'account.";
+        "Attendi...";
+
+      message.style.color = "#555";
+
+
+      /* =========================
+         LOGIN
+      ========================= */
+
+      if (loginMode) {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .signInWithPassword({
+              email: email,
+              password: password
+            });
+
+
+        if (error) {
+
+          message.textContent =
+            "Email o password non corretti.";
+
+          message.style.color = "red";
+
+          return;
+        }
+
+
+        message.textContent =
+          "Accesso effettuato!";
+
+        message.style.color = "green";
+
+
+        showShop(data.user);
+
+      }
+
+
+      /* =========================
+         REGISTRAZIONE
+      ========================= */
+
+      else {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signUp({
+            email: email,
+            password: password
+          });
+
+
+        if (error) {
+
+          message.textContent =
+            error.message;
+
+          message.style.color = "red";
+
+          return;
+        }
+
+
+        /*
+          Se Supabase richiede la conferma
+          dell'email, l'utente dovrà
+          cliccare il link ricevuto.
+        */
+
+        if (data.session) {
+
+          message.textContent =
+            "Registrazione completata!";
+
+          message.style.color = "green";
+
+          showShop(data.user);
+
+        } else {
+
+          message.textContent =
+            "Registrazione completata! Controlla la tua email per confermare l'account.";
+
+          message.style.color = "green";
+
+        }
+
+      }
+
     }
 
-  }
+
+    /* ==================================================
+       MOSTRA SHOP
+    ================================================== */
+
+    function showShop(user) {
+
+      document.getElementById("authPage")
+        .style.display = "none";
+
+      document.getElementById("shopPage")
+        .style.display = "block";
 
 
-  // =====================================================
-  // LOGOUT
-  // =====================================================
-
-  async function logout() {
-
-    await supabaseClient.auth.signOut();
-
-    updateUserInterface();
-
-  }
-
-
-  // =====================================================
-  // CONTROLLO SESSIONE
-  // =====================================================
-
-  async function updateUserInterface() {
-
-    const {
-      data: { session }
-    } = await supabaseClient.auth.getSession();
-
-    const loginButton =
-      document.getElementById("loginButton");
-
-    const logoutButton =
-      document.getElementById("logoutButton");
-
-    const userEmail =
-      document.getElementById("userEmail");
-
-
-    if (session) {
-
-      loginButton.style.display = "none";
-      logoutButton.style.display = "block";
-      userEmail.style.display = "block";
-
-      userEmail.textContent =
-        session.user.email;
-
-    } else {
-
-      loginButton.style.display = "block";
-      logoutButton.style.display = "none";
-      userEmail.style.display = "none";
+      document.getElementById("userEmail")
+        .textContent = user.email;
 
     }
 
-  }
 
+    /* ==================================================
+       MOSTRA LOGIN
+    ================================================== */
 
-  // Aggiorna automaticamente l'interfaccia
-  // quando cambia la sessione.
+    function showLogin() {
 
-  supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
+      document.getElementById("shopPage")
+        .style.display = "none";
 
-      updateUserInterface();
+      document.getElementById("authPage")
+        .style.display = "flex";
 
     }
-  );
 
 
-  // =====================================================
-  // CARRELLO
-  // =====================================================
+    /* ==================================================
+       LOGOUT
+    ================================================== */
 
-  let cart = [];
+    async function logout() {
 
-  function addToCart(name, price) {
+      await supabaseClient.auth.signOut();
 
-    cart.push({
-      name: name,
-      price: price
-    });
+      showLogin();
 
-    document.getElementById("cartCount").textContent =
-      cart.length;
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
 
-    alert(name + " aggiunto al carrello!");
+      document.getElementById("authMessage")
+        .textContent = "";
 
-  }
-
-
-  function showCart() {
-
-    if (cart.length === 0) {
-
-      alert("Il carrello è vuoto.");
-
-      return;
     }
 
-    let total = 0;
 
-    let text = "CARRELLO\n\n";
+    /* ==================================================
+       CONTROLLO SESSIONE ALL'APERTURA
+    ================================================== */
 
-    cart.forEach((product, index) => {
+    async function checkSession() {
+
+      const {
+        data: {
+          session
+        }
+      } =
+        await supabaseClient.auth.getSession();
+
+
+      if (session) {
+
+        showShop(session.user);
+
+      } else {
+
+        showLogin();
+
+      }
+
+    }
+
+
+    /* ==================================================
+       CAMBIO SESSIONE
+    ================================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+
+        if (session) {
+
+          showShop(session.user);
+
+        } else {
+
+          showLogin();
+
+        }
+
+      }
+    );
+
+
+    /* ==================================================
+       CARRELLO
+    ================================================== */
+
+    let cart = [];
+
+
+    function addToCart(name, price) {
+
+      cart.push({
+        name: name,
+        price: price
+      });
+
+
+      document.getElementById("cartCount")
+        .textContent = cart.length;
+
+
+      alert(
+        name +
+        " aggiunto al carrello!"
+      );
+
+    }
+
+
+    function showCart() {
+
+      if (cart.length === 0) {
+
+        alert(
+          "Il carrello è vuoto."
+        );
+
+        return;
+      }
+
+
+      let total = 0;
+
+      let text =
+        "CARRELLO\n\n";
+
+
+      cart.forEach(
+        (product, index) => {
+
+          text +=
+            (index + 1) +
+            ". " +
+            product.name +
+            " - €" +
+            product.price.toFixed(2) +
+            "\n";
+
+          total += product.price;
+
+        }
+      );
+
 
       text +=
-        (index + 1) +
-        ". " +
-        product.name +
-        " - €" +
-        product.price.toFixed(2) +
-        "\n";
-
-      total += product.price;
-
-    });
-
-    text +=
-      "\nTotale: €" +
-      total.toFixed(2);
-
-    alert(text);
-
-  }
+        "\nTotale: €" +
+        total.toFixed(2);
 
 
-  // =====================================================
-  // AVVIO
-  // =====================================================
+      alert(text);
 
-  updateUserInterface();
+    }
 
-</script>
+
+    /* ==================================================
+       AVVIO
+    ================================================== */
+
+    checkSession();
+
+  </script>
 
 </body>
 </html>
