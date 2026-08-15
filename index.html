@@ -1,233 +1,590 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyShop - E-commerce</title>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-body {
-    font-family: 'Rajdhani', Arial, sans-serif;
-}
-
+  <style>
     * {
-        box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
     }
 
     body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at top, #16213e, #050510 70%);
-        font-family: 'Orbitron', sans-serif;
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      background: #f5f5f5;
+      color: #222;
     }
 
-    .container {
-        width: 90%;
-        max-width: 1000px;
-        padding: 30px;
+    header {
+      background: #111;
+      color: white;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    h1 {
-    font-size: 38px;
-    font-weight: 700;
-    letter-spacing: 3px;
-}
-
-th {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-td {
-    font-size: 17px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-    .table-box {
-        border: 2px solid #00f7ff;
-        border-radius: 15px;
-        overflow: hidden;
-        background: rgba(0, 10, 30, 0.8);
-        box-shadow:
-            0 0 15px #00f7ff,
-            inset 0 0 20px rgba(0,247,255,0.3);
+    header h1 {
+      font-size: 24px;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
+    nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
 
-    th {
-        background: linear-gradient(90deg, #00f7ff, #0066ff);
-        color: #050510;
-        padding: 18px;
-        font-size: 16px;
-        text-transform: uppercase;
+    button {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
-    td {
-        padding: 15px;
-        text-align: center;
-        border-bottom: 1px solid rgba(0,247,255,0.3);
-        color: #d8ffff;
+    .login-btn {
+      background: white;
+      color: #111;
     }
 
-    tr {
-        transition: 0.3s;
+    .logout-btn {
+      background: #e74c3c;
+      color: white;
+      display: none;
     }
 
-    tbody tr:hover {
-        background: rgba(0,247,255,0.15);
-        transform: scale(1.02);
-        box-shadow:
-            0 0 20px #00f7ff;
+    .user-email {
+      font-size: 14px;
+      display: none;
     }
 
-    .username {
-        color: #ffcc00;
-        font-weight: bold;
-        text-shadow: 0 0 10px #ffcc00;
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
     }
 
-    .creation {
-        color: #39FF14;
-        text-shadow: 0 0 10px #39FF14;
+    .hero h2 {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
 
-    .friends {
-        color: #00E5FF;
-        text-shadow: 0 0 10px #00E5FF;
+    .hero p {
+      color: #666;
     }
 
-    .suspend {
-        color: #ff00ff;
-        text-shadow: 0 0 10px #ff00ff;
+    .products {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
     }
-	
-	.robux {
-		color: #FF1744;
-		text-shadow: 0 0 10px #FF1744;
-	}
-	
-	.price {
-		color: #F4A460;
-		text-shadow: 0 0 10px #F4A460;
-	}
-	
-	.account-img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #00f7ff;
-    box-shadow: 0 0 10px #00f7ff;
-}
 
-td {
-    padding: 15px;
-    text-align: center;
-    color: #d8ffff;
-    border-bottom: 1px solid rgba(0, 247, 255, 0.3);
-    border-right: 1px solid rgba(0, 247, 255, 0.4);
-}
+    .product {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
 
-th {
-    border-right: 1px solid rgba(5, 5, 16, 0.4);
-}
+    .product img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
 
-</style>
+    .product-content {
+      padding: 18px;
+    }
 
+    .product h3 {
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .add-cart {
+      width: 100%;
+      background: #111;
+      color: white;
+    }
+
+    .cart {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #111;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    /* MODALE LOGIN */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: white;
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      font-size: 20px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #111;
+      color: white;
+      margin-top: 5px;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 15px;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 50px;
+      background: #111;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+  <h1>MyShop</h1>
 
-<h1>Nexora</h1>
+  <nav>
+    <span class="user-email" id="userEmail"></span>
 
-<div class="table-box">
+    <button class="login-btn" id="loginButton" onclick="openModal()">
+      Accedi / Registrati
+    </button>
 
-<table>
+    <button class="logout-btn" id="logoutButton" onclick="logout()">
+      Esci
+    </button>
+  </nav>
+</header>
 
-<thead>
-<tr>
-	<th>Immagine</th>
-    <th>Username</th>
-    <th>Data creazione</th>
-    <th>Friends</th>
-	<th>Friends in sospeso</th>
-	<th>Robux</th>
-	<th>Prezzo</th>
-</tr>
-</thead>
+<section class="hero">
+  <h2>Benvenuto su MyShop</h2>
+  <p>Scopri i nostri prodotti.</p>
+</section>
 
-<tbody>
+<section class="products">
 
-<tr>
-    <td>
-        <img src="CrystalFox741.webp" alt="Immagine account" class="account-img">
-    </td>
-    <td class="username">CrystalFox741</td>
-    <td class="creation">09.08.2026</td>
-    <td class="friends">1</td>
-	<td class="suspend">18</td>
-	<td class="robux">0</td>
-    <td class="price">1.87€</td>
-</tr>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80">
 
-<tr>
-    <td>
-        <img src="StormRider_594.webp" alt="Immagine account" class="account-img">
-    </td>
-    <td class="username">StormRider_594</td>
-    <td class="creation">09.08.2026</td>
-    <td class="friends">0</td>
-	<td class="suspend">0</td>
-	<td class="robux">0</td>
-    <td class="price">0.01</td>
-</tr>
+    <div class="product-content">
+      <h3>Orologio</h3>
+      <p class="price">€49,99</p>
 
-<tr>
-    <td>
-        <img src="DarkOrbit881.webp" alt="Immagine account" class="account-img">
-    </td>
-    <td class="username">DarkOrbit881</td>
-    <td class="creation">11.08.2026</td>
-    <td class="friends">X</td>
-	<td class="suspend">X</td>
-	<td class="robux">X</td>
-    <td class="price">X</td>
-</tr>
+      <button class="add-cart" onclick="addToCart('Orologio', 49.99)">
+        Aggiungi al carrello
+      </button>
+    </div>
+  </div>
 
-<tr>
-    <td>
-        <img src="PixelKnight751.webp" alt="Immagine account" class="account-img">
-    </td>
-    <td class="username">PixelKnight751</td>
-    <td class="creation">12.08.2026</td>
-    <td class="friends">X</td>
-	<td class="suspend">X</td>
-	<td class="robux">X</td>
-    <td class="price">X</td>
-</tr>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80">
 
-</tbody>
+    <div class="product-content">
+      <h3>Scarpe</h3>
+      <p class="price">€79,99</p>
 
-</table>
+      <button class="add-cart" onclick="addToCart('Scarpe', 79.99)">
+        Aggiungi al carrello
+      </button>
+    </div>
+  </div>
+
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80">
+
+    <div class="product-content">
+      <h3>Fotocamera</h3>
+      <p class="price">€199,99</p>
+
+      <button class="add-cart" onclick="addToCart('Fotocamera', 199.99)">
+        Aggiungi al carrello
+      </button>
+    </div>
+  </div>
+
+</section>
+
+<div class="cart" onclick="showCart()">
+  🛒 Carrello: <span id="cartCount">0</span>
+</div>
+
+<footer>
+  © 2026 MyShop
+</footer>
+
+
+<!-- MODALE LOGIN -->
+
+<div class="modal" id="authModal">
+
+  <div class="modal-box">
+
+    <button class="close" onclick="closeModal()">×</button>
+
+    <h2 id="authTitle">Accedi</h2>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="La tua email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="submit-btn"
+      onclick="handleAuth()"
+      id="authSubmit"
+    >
+      Accedi
+    </button>
+
+    <p
+      class="switch"
+      onclick="switchAuth()"
+      id="switchText"
+    >
+      Non hai un account? Registrati
+    </p>
+
+    <div class="message" id="authMessage"></div>
+
+  </div>
 
 </div>
 
-</div>
+
+<script>
+
+  // =====================================================
+  // SUPABASE
+  // =====================================================
+
+  const SUPABASE_URL = "https://yzvksxgiuqhhvrqoqjak.supabase.co";
+
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+  // =====================================================
+  // LOGIN / REGISTRAZIONE
+  // =====================================================
+
+  let isLogin = true;
+
+  function openModal() {
+    document.getElementById("authModal").style.display = "flex";
+  }
+
+  function closeModal() {
+    document.getElementById("authModal").style.display = "none";
+    document.getElementById("authMessage").textContent = "";
+  }
+
+  function switchAuth() {
+
+    isLogin = !isLogin;
+
+    const title = document.getElementById("authTitle");
+    const submit = document.getElementById("authSubmit");
+    const switchText = document.getElementById("switchText");
+
+    if (isLogin) {
+
+      title.textContent = "Accedi";
+      submit.textContent = "Accedi";
+
+      switchText.textContent =
+        "Non hai un account? Registrati";
+
+    } else {
+
+      title.textContent = "Registrati";
+      submit.textContent = "Crea account";
+
+      switchText.textContent =
+        "Hai già un account? Accedi";
+    }
+  }
+
+
+  async function handleAuth() {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const message =
+      document.getElementById("authMessage");
+
+    if (!email || !password) {
+
+      message.textContent =
+        "Inserisci email e password.";
+
+      return;
+    }
+
+    message.textContent = "Attendi...";
+
+
+    // LOGIN
+
+    if (isLogin) {
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+
+        message.textContent =
+          "Errore: " + error.message;
+
+        return;
+      }
+
+      message.textContent =
+        "Accesso effettuato!";
+
+      setTimeout(() => {
+        closeModal();
+      }, 800);
+
+    }
+
+
+    // REGISTRAZIONE
+
+    else {
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+
+        message.textContent =
+          "Errore: " + error.message;
+
+        return;
+      }
+
+      message.textContent =
+        "Account creato! Controlla la tua email per confermare l'account.";
+    }
+
+  }
+
+
+  // =====================================================
+  // LOGOUT
+  // =====================================================
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    updateUserInterface();
+
+  }
+
+
+  // =====================================================
+  // CONTROLLO SESSIONE
+  // =====================================================
+
+  async function updateUserInterface() {
+
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+    const userEmail =
+      document.getElementById("userEmail");
+
+
+    if (session) {
+
+      loginButton.style.display = "none";
+      logoutButton.style.display = "block";
+      userEmail.style.display = "block";
+
+      userEmail.textContent =
+        session.user.email;
+
+    } else {
+
+      loginButton.style.display = "block";
+      logoutButton.style.display = "none";
+      userEmail.style.display = "none";
+
+    }
+
+  }
+
+
+  // Aggiorna automaticamente l'interfaccia
+  // quando cambia la sessione.
+
+  supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+
+      updateUserInterface();
+
+    }
+  );
+
+
+  // =====================================================
+  // CARRELLO
+  // =====================================================
+
+  let cart = [];
+
+  function addToCart(name, price) {
+
+    cart.push({
+      name: name,
+      price: price
+    });
+
+    document.getElementById("cartCount").textContent =
+      cart.length;
+
+    alert(name + " aggiunto al carrello!");
+
+  }
+
+
+  function showCart() {
+
+    if (cart.length === 0) {
+
+      alert("Il carrello è vuoto.");
+
+      return;
+    }
+
+    let total = 0;
+
+    let text = "CARRELLO\n\n";
+
+    cart.forEach((product, index) => {
+
+      text +=
+        (index + 1) +
+        ". " +
+        product.name +
+        " - €" +
+        product.price.toFixed(2) +
+        "\n";
+
+      total += product.price;
+
+    });
+
+    text +=
+      "\nTotale: €" +
+      total.toFixed(2);
+
+    alert(text);
+
+  }
+
+
+  // =====================================================
+  // AVVIO
+  // =====================================================
+
+  updateUserInterface();
+
+</script>
 
 </body>
 </html>
