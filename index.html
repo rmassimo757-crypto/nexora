@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>MyShop</title>
 
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
   <style>
 
@@ -14,255 +22,494 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
+
 
     body {
       background: #f5f5f5;
       color: #222;
     }
 
-    /* =========================
-       LOGIN / REGISTRAZIONE
-    ========================= */
+
+    /* =========================================
+       PAGINA AUTENTICAZIONE
+    ========================================= */
 
     #authPage {
+
       min-height: 100vh;
 
       display: flex;
+
       justify-content: center;
+
       align-items: center;
 
-      background: linear-gradient(135deg, #111, #333);
-
       padding: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #111111,
+          #333333
+        );
+
     }
 
-    .auth-box {
-      background: white;
+
+    .auth-container {
 
       width: 100%;
+
       max-width: 430px;
+
+      background: white;
 
       padding: 35px;
 
-      border-radius: 18px;
+      border-radius: 20px;
 
       box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25);
+        0 20px 50px
+        rgba(0, 0, 0, 0.3);
+
     }
 
-    .auth-box h1 {
+
+    .logo {
+
       text-align: center;
+
+      font-size: 32px;
+
+      font-weight: bold;
+
       margin-bottom: 10px;
+
     }
 
-    .subtitle {
+
+    .auth-description {
+
       text-align: center;
+
       color: #777;
-      margin-bottom: 28px;
+
+      margin-bottom: 30px;
+
+      line-height: 1.5;
+
     }
 
-    .auth-box input {
+
+    .input-group {
+
+      margin-bottom: 16px;
+
+    }
+
+
+    .input-group label {
+
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+    }
+
+
+    .input-group input {
+
       width: 100%;
 
       padding: 14px;
-
-      margin-bottom: 14px;
 
       border: 1px solid #ddd;
 
       border-radius: 9px;
 
+      outline: none;
+
       font-size: 15px;
+
     }
 
+
+    .input-group input:focus {
+
+      border-color: #111;
+
+    }
+
+
     .auth-button {
+
       width: 100%;
 
       padding: 14px;
 
+      border: none;
+
+      border-radius: 9px;
+
       background: #111;
+
       color: white;
 
-      border: none;
-      border-radius: 9px;
+      font-size: 16px;
 
       cursor: pointer;
 
-      font-size: 16px;
+      margin-top: 5px;
+
     }
+
 
     .auth-button:hover {
+
       background: #333;
+
     }
 
-    .switch-auth {
-      text-align: center;
+
+    .auth-button:disabled {
+
+      opacity: 0.6;
+
+      cursor: not-allowed;
+
+    }
+
+
+    .switch-button {
+
+      border: none;
+
+      background: none;
+
+      width: 100%;
 
       margin-top: 20px;
 
+      cursor: pointer;
+
       color: #555;
 
-      cursor: pointer;
+      font-size: 14px;
+
     }
 
-    .switch-auth:hover {
+
+    .switch-button:hover {
+
       color: #000;
+
+      text-decoration: underline;
+
     }
+
 
     #authMessage {
+
       text-align: center;
 
-      margin-top: 15px;
+      margin-top: 18px;
+
+      line-height: 1.5;
 
       font-size: 14px;
+
     }
 
-    /* =========================
+
+    .error {
+
+      color: #d93025;
+
+    }
+
+
+    .success {
+
+      color: #188038;
+
+    }
+
+
+    .info {
+
+      color: #555;
+
+    }
+
+
+    /* =========================================
        SHOP
-    ========================= */
+    ========================================= */
 
     #shopPage {
+
       display: none;
+
+      min-height: 100vh;
+
     }
 
+
     header {
+
       background: #111;
+
       color: white;
 
       padding: 18px 40px;
 
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
+
     }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+
+    .shop-logo {
+
+      font-size: 24px;
+
+      font-weight: bold;
+
     }
+
+
+    .user-area {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+    }
+
 
     #userEmail {
+
       font-size: 14px;
+
     }
 
+
     .logout-button {
-      background: #e74c3c;
-      color: white;
 
       border: none;
 
-      padding: 10px 15px;
+      background: #e74c3c;
+
+      color: white;
+
+      padding: 10px 16px;
 
       border-radius: 8px;
 
       cursor: pointer;
+
     }
 
+
+    .logout-button:hover {
+
+      background: #c0392b;
+
+    }
+
+
+    /* =========================================
+       HERO
+    ========================================= */
+
     .hero {
+
       background: white;
 
       text-align: center;
 
-      padding: 60px 20px;
+      padding: 70px 20px;
+
     }
 
-    .hero h2 {
-      font-size: 40px;
 
-      margin-bottom: 10px;
+    .hero h1 {
+
+      font-size: 42px;
+
+      margin-bottom: 12px;
+
     }
+
 
     .hero p {
+
       color: #666;
+
+      font-size: 18px;
+
     }
 
+
+    /* =========================================
+       PRODOTTI
+    ========================================= */
+
     .products {
+
       max-width: 1100px;
 
-      margin: 40px auto;
+      margin: 45px auto;
 
       padding: 0 20px;
 
       display: grid;
 
       grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+        repeat(
+          auto-fit,
+          minmax(230px, 1fr)
+        );
 
       gap: 25px;
+
     }
 
+
     .product {
+
       background: white;
 
-      border-radius: 14px;
+      border-radius: 15px;
 
       overflow: hidden;
 
       box-shadow:
-        0 5px 20px rgba(0,0,0,0.08);
+        0 5px 20px
+        rgba(0, 0, 0, 0.08);
+
     }
+
 
     .product img {
+
       width: 100%;
 
-      height: 220px;
+      height: 230px;
 
       object-fit: cover;
+
     }
+
 
     .product-content {
-      padding: 18px;
+
+      padding: 20px;
+
     }
+
 
     .product h3 {
+
       margin-bottom: 10px;
+
     }
 
+
+    .product-description {
+
+      color: #777;
+
+      font-size: 14px;
+
+      margin-bottom: 15px;
+
+    }
+
+
     .price {
-      font-size: 20px;
+
+      font-size: 21px;
 
       font-weight: bold;
 
       margin-bottom: 15px;
+
     }
 
+
     .add-cart {
+
       width: 100%;
 
       padding: 12px;
-
-      background: #111;
-
-      color: white;
 
       border: none;
 
       border-radius: 8px;
 
+      background: #111;
+
+      color: white;
+
       cursor: pointer;
+
     }
 
-    .cart {
+
+    .add-cart:hover {
+
+      background: #333;
+
+    }
+
+
+    /* =========================================
+       CARRELLO
+    ========================================= */
+
+    .cart-button {
+
       position: fixed;
 
       right: 20px;
+
       bottom: 20px;
+
+      padding: 15px 22px;
 
       background: #111;
 
       color: white;
 
-      padding: 15px 20px;
-
       border-radius: 50px;
 
       cursor: pointer;
+
+      box-shadow:
+        0 5px 20px
+        rgba(0,0,0,0.2);
+
     }
 
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
     footer {
+
       background: #111;
 
       color: white;
@@ -271,112 +518,192 @@
 
       padding: 30px;
 
-      margin-top: 50px;
+      margin-top: 60px;
+
     }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
 
     @media (max-width: 600px) {
 
-      header {
-        padding: 15px 20px;
+      .auth-container {
+
+        padding: 25px;
+
       }
+
+
+      header {
+
+        padding: 15px 20px;
+
+      }
+
+
+      .shop-logo {
+
+        font-size: 20px;
+
+      }
+
 
       #userEmail {
+
         display: none;
+
       }
 
-      .hero h2 {
-        font-size: 30px;
+
+      .hero h1 {
+
+        font-size: 32px;
+
       }
 
     }
 
   </style>
+
 </head>
+
 
 <body>
 
 
-<!-- ==================================================
+<!-- =================================================
      PAGINA LOGIN / REGISTRAZIONE
 ================================================== -->
 
 <section id="authPage">
 
-  <div class="auth-box">
+  <div class="auth-container">
 
-    <h1 id="authTitle">
-      Accedi
-    </h1>
+
+    <div class="logo">
+      MyShop
+    </div>
+
 
     <p
-      class="subtitle"
-      id="authSubtitle"
+      class="auth-description"
+      id="authDescription"
     >
-      Accedi al tuo account per entrare nello shop
+      Accedi al tuo account per entrare
+      nel nostro shop.
     </p>
 
 
     <!-- EMAIL -->
 
-    <input
-      type="email"
-      id="email"
-      placeholder="Email"
-      autocomplete="email"
-    >
+    <div class="input-group">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="nome@email.com"
+        autocomplete="email"
+      >
+
+    </div>
 
 
     <!-- PASSWORD -->
 
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-      autocomplete="current-password"
+    <div class="input-group">
+
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Inserisci la password"
+        autocomplete="current-password"
+      >
+
+    </div>
+
+
+    <!-- DATA DI NASCITA -->
+
+    <div
+      class="input-group"
+      id="birthDateGroup"
+      style="display:none;"
     >
 
+      <label for="birthDate">
+        Data di nascita
+      </label>
 
-    <!-- DATA DI NASCITA
-         VISIBILE SOLO DURANTE LA REGISTRAZIONE -->
+      <input
+        id="birthDate"
+        type="date"
+      >
 
-    <input
-      type="date"
-      id="birthDate"
-      style="display: none;"
+    </div>
+
+
+    <!-- TELEFONO -->
+
+    <div
+      class="input-group"
+      id="phoneGroup"
+      style="display:none;"
     >
 
+      <label for="phone">
+        Numero di telefono
+        <span style="font-weight:normal;">
+          (facoltativo)
+        </span>
+      </label>
 
-    <!-- TELEFONO
-         VISIBILE SOLO DURANTE LA REGISTRAZIONE -->
+      <input
+        id="phone"
+        type="tel"
+        placeholder="+41 79 123 45 67"
+        autocomplete="tel"
+      >
 
-    <input
-      type="tel"
-      id="phone"
-      placeholder="Numero di telefono (facoltativo)"
-      autocomplete="tel"
-      style="display: none;"
-    >
+    </div>
 
+
+    <!-- BOTTONE -->
 
     <button
-      class="auth-button"
       id="authButton"
+      class="auth-button"
       onclick="handleAuth()"
     >
       Accedi
     </button>
 
 
-    <p
-      class="switch-auth"
-      id="switchAuth"
+    <!-- CAMBIO MODALITÀ -->
+
+    <button
+      id="switchButton"
+      class="switch-button"
       onclick="switchAuthMode()"
     >
-      Non hai un account? Registrati
-    </p>
+      Non hai un account?
+      Registrati
+    </button>
 
+
+    <!-- MESSAGGI -->
 
     <div id="authMessage"></div>
+
 
   </div>
 
@@ -384,19 +711,23 @@
 
 
 
-<!-- ==================================================
+<!-- =================================================
      SHOP
 ================================================== -->
 
 <section id="shopPage">
 
+
+  <!-- HEADER -->
+
   <header>
 
-    <h1>
+    <div class="shop-logo">
       MyShop
-    </h1>
+    </div>
 
-    <div class="header-right">
+
+    <div class="user-area">
 
       <span id="userEmail"></span>
 
@@ -412,11 +743,14 @@
   </header>
 
 
+
+  <!-- HERO -->
+
   <section class="hero">
 
-    <h2>
-      Benvenuto su MyShop
-    </h2>
+    <h1>
+      Benvenuto su MyShop!
+    </h1>
 
     <p>
       Scopri i nostri prodotti.
@@ -425,15 +759,18 @@
   </section>
 
 
+
   <!-- PRODOTTI -->
 
   <section class="products">
 
 
+    <!-- PRODOTTO 1 -->
+
     <div class="product">
 
       <img
-        src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80"
+        src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80"
         alt="Orologio"
       >
 
@@ -443,13 +780,22 @@
           Orologio
         </h3>
 
-        <p class="price">
-          €49,99
+        <p class="product-description">
+          Orologio elegante per tutti i giorni.
         </p>
+
+        <div class="price">
+          €49,99
+        </div>
 
         <button
           class="add-cart"
-          onclick="addToCart('Orologio', 49.99)"
+          onclick="
+            addToCart(
+              'Orologio',
+              49.99
+            )
+          "
         >
           Aggiungi al carrello
         </button>
@@ -460,10 +806,12 @@
 
 
 
+    <!-- PRODOTTO 2 -->
+
     <div class="product">
 
       <img
-        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80"
+        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80"
         alt="Scarpe"
       >
 
@@ -473,13 +821,22 @@
           Scarpe
         </h3>
 
-        <p class="price">
-          €79,99
+        <p class="product-description">
+          Scarpe sportive comode e moderne.
         </p>
+
+        <div class="price">
+          €79,99
+        </div>
 
         <button
           class="add-cart"
-          onclick="addToCart('Scarpe', 79.99)"
+          onclick="
+            addToCart(
+              'Scarpe',
+              79.99
+            )
+          "
         >
           Aggiungi al carrello
         </button>
@@ -490,10 +847,12 @@
 
 
 
+    <!-- PRODOTTO 3 -->
+
     <div class="product">
 
       <img
-        src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80"
+        src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80"
         alt="Fotocamera"
       >
 
@@ -503,13 +862,22 @@
           Fotocamera
         </h3>
 
-        <p class="price">
-          €199,99
+        <p class="product-description">
+          Fotocamera digitale per le tue foto.
         </p>
+
+        <div class="price">
+          €199,99
+        </div>
 
         <button
           class="add-cart"
-          onclick="addToCart('Fotocamera', 199.99)"
+          onclick="
+            addToCart(
+              'Fotocamera',
+              199.99
+            )
+          "
         >
           Aggiungi al carrello
         </button>
@@ -518,23 +886,35 @@
 
     </div>
 
+
   </section>
+
 
 
   <!-- CARRELLO -->
 
   <div
-    class="cart"
+    class="cart-button"
     onclick="showCart()"
   >
+
     🛒 Carrello:
-    <span id="cartCount">0</span>
+    <span id="cartCount">
+      0
+    </span>
+
   </div>
 
 
+
+  <!-- FOOTER -->
+
   <footer>
+
     © 2026 MyShop
+
   </footer>
+
 
 </section>
 
@@ -542,12 +922,19 @@
 
 <script>
 
+
 /* =====================================================
-   SUPABASE
+   CONFIGURAZIONE SUPABASE
 ===================================================== */
+
+/*
+   SOSTITUISCI QUESTI DUE VALORI
+   CON QUELLI DEL TUO PROGETTO SUPABASE.
+*/
 
 const SUPABASE_URL =
   "https://yzvksxgiuqhhvrqoqjak.supabase.co";
+
 
 const SUPABASE_ANON_KEY =
   "sb_publishable_hHYDgay49GSkgvnHDsWC0g_CTEx75OU ";
@@ -562,89 +949,115 @@ const supabaseClient =
 
 
 /* =====================================================
-   MODALITÀ
+   VARIABILI
 ===================================================== */
 
 let loginMode = true;
 
+let cart = [];
+
 
 
 /* =====================================================
-   CAMBIA LOGIN / REGISTRAZIONE
+   CAMBIO LOGIN / REGISTRAZIONE
 ===================================================== */
 
 function switchAuthMode() {
 
   loginMode = !loginMode;
 
-  const title =
-    document.getElementById("authTitle");
 
-  const subtitle =
-    document.getElementById("authSubtitle");
+  const description =
+    document.getElementById(
+      "authDescription"
+    );
+
 
   const button =
-    document.getElementById("authButton");
+    document.getElementById(
+      "authButton"
+    );
 
-  const switchText =
-    document.getElementById("switchAuth");
 
-  const birthDate =
-    document.getElementById("birthDate");
+  const switchButton =
+    document.getElementById(
+      "switchButton"
+    );
 
-  const phone =
-    document.getElementById("phone");
+
+  const birthDateGroup =
+    document.getElementById(
+      "birthDateGroup"
+    );
+
+
+  const phoneGroup =
+    document.getElementById(
+      "phoneGroup"
+    );
+
 
   const password =
-    document.getElementById("password");
+    document.getElementById(
+      "password"
+    );
 
 
   if (loginMode) {
 
-    /* LOGIN */
+    /* =========================
+       LOGIN
+    ========================= */
 
-    title.textContent =
-      "Accedi";
+    description.textContent =
+      "Accedi al tuo account per entrare nel nostro shop.";
 
-    subtitle.textContent =
-      "Accedi al tuo account per entrare nello shop";
 
     button.textContent =
       "Accedi";
 
-    switchText.textContent =
+
+    switchButton.textContent =
       "Non hai un account? Registrati";
 
-    birthDate.style.display =
+
+    birthDateGroup.style.display =
       "none";
 
-    phone.style.display =
+
+    phoneGroup.style.display =
       "none";
+
 
     password.autocomplete =
       "current-password";
 
+
   } else {
 
-    /* REGISTRAZIONE */
+    /* =========================
+       REGISTRAZIONE
+    ========================= */
 
-    title.textContent =
-      "Crea un account";
+    description.textContent =
+      "Crea il tuo account per entrare nel nostro shop.";
 
-    subtitle.textContent =
-      "Registrati per entrare nello shop";
 
     button.textContent =
       "Registrati";
 
-    switchText.textContent =
+
+    switchButton.textContent =
       "Hai già un account? Accedi";
 
-    birthDate.style.display =
+
+    birthDateGroup.style.display =
       "block";
 
-    phone.style.display =
+
+    phoneGroup.style.display =
       "block";
+
 
     password.autocomplete =
       "new-password";
@@ -652,64 +1065,160 @@ function switchAuthMode() {
   }
 
 
-  document.getElementById("authMessage")
-    .textContent = "";
+  clearMessage();
 
 }
 
 
 
 /* =====================================================
-   AUTENTICAZIONE
+   MESSAGGI
+===================================================== */
+
+function showMessage(
+  text,
+  type
+) {
+
+  const message =
+    document.getElementById(
+      "authMessage"
+    );
+
+
+  message.textContent =
+    text;
+
+
+  message.className =
+    type;
+
+}
+
+
+function clearMessage() {
+
+  const message =
+    document.getElementById(
+      "authMessage"
+    );
+
+
+  message.textContent =
+    "";
+
+
+  message.className =
+    "";
+
+}
+
+
+
+/* =====================================================
+   DISABILITA BOTTONE
+===================================================== */
+
+function setLoading(
+  loading
+) {
+
+  const button =
+    document.getElementById(
+      "authButton"
+    );
+
+
+  button.disabled =
+    loading;
+
+
+  if (loading) {
+
+    button.textContent =
+      "Attendi...";
+
+  } else {
+
+    button.textContent =
+      loginMode
+        ? "Accedi"
+        : "Registrati";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   LOGIN / REGISTRAZIONE
 ===================================================== */
 
 async function handleAuth() {
 
   const email =
-    document.getElementById("email")
-      .value
-      .trim();
+    document.getElementById(
+      "email"
+    ).value.trim();
+
 
   const password =
-    document.getElementById("password")
-      .value;
+    document.getElementById(
+      "password"
+    ).value;
+
 
   const birthDate =
-    document.getElementById("birthDate")
-      .value;
+    document.getElementById(
+      "birthDate"
+    ).value;
+
 
   const phone =
-    document.getElementById("phone")
-      .value
-      .trim();
-
-  const message =
-    document.getElementById("authMessage");
+    document.getElementById(
+      "phone"
+    ).value.trim();
 
 
-  /* Controlli base */
 
-  if (!email || !password) {
+  /* =========================
+     CONTROLLI
+  ========================= */
 
-    message.textContent =
-      "Inserisci email e password.";
+  if (!email) {
 
-    message.style.color =
-      "red";
+    showMessage(
+      "Inserisci la tua email.",
+      "error"
+    );
 
     return;
+
+  }
+
+
+  if (!password) {
+
+    showMessage(
+      "Inserisci la password.",
+      "error"
+    );
+
+    return;
+
   }
 
 
   if (password.length < 6) {
 
-    message.textContent =
-      "La password deve contenere almeno 6 caratteri.";
-
-    message.style.color =
-      "red";
+    showMessage(
+      "La password deve contenere almeno 6 caratteri.",
+      "error"
+    );
 
     return;
+
   }
 
 
@@ -720,11 +1229,7 @@ async function handleAuth() {
 
   if (loginMode) {
 
-    message.textContent =
-      "Accesso in corso...";
-
-    message.style.color =
-      "#555";
+    setLoading(true);
 
 
     const {
@@ -741,21 +1246,37 @@ async function handleAuth() {
         });
 
 
+    setLoading(false);
+
+
     if (error) {
 
-      message.textContent =
-        "Email o password non corretti.";
+      console.error(error);
 
-      message.style.color =
-        "red";
+
+      showMessage(
+        "Accesso non riuscito. Controlla email e password.",
+        "error"
+      );
 
       return;
+
     }
 
 
-    showShop(data.user);
+    showMessage(
+      "Accesso effettuato!",
+      "success"
+    );
+
+
+    showShop(
+      data.user
+    );
+
 
     return;
+
   }
 
 
@@ -764,130 +1285,135 @@ async function handleAuth() {
      REGISTRAZIONE
   =================================================== */
 
+
   if (!birthDate) {
 
-    message.textContent =
-      "Inserisci la tua data di nascita.";
-
-    message.style.color =
-      "red";
+    showMessage(
+      "Inserisci la tua data di nascita.",
+      "error"
+    );
 
     return;
+
   }
 
 
-  /* Controllo data */
+  /* Controlla che la data non sia futura */
 
-  const selectedDate =
-    new Date(birthDate);
+  const birth =
+    new Date(
+      birthDate + "T00:00:00"
+    );
+
 
   const today =
     new Date();
 
 
-  if (selectedDate > today) {
+  if (birth > today) {
 
-    message.textContent =
-      "La data di nascita non è valida.";
-
-    message.style.color =
-      "red";
+    showMessage(
+      "La data di nascita non può essere futura.",
+      "error"
+    );
 
     return;
+
   }
 
 
-  message.textContent =
-    "Creazione account...";
-
-  message.style.color =
-    "#555";
+  setLoading(true);
 
 
-  /* ===================================================
-     CREA UTENTE SUPABASE
-  =================================================== */
+  /*
+     IMPORTANTE:
+
+     birth_date e phone vengono inseriti
+     nei metadata dell'utente.
+
+     Il TRIGGER SUPABASE che hai creato
+     nel SQL Editor li prenderà da:
+
+     raw_user_meta_data
+
+     e li salverà nella tabella profiles.
+  */
 
   const {
     data,
     error
   } =
-    await supabaseClient.auth.signUp({
+    await supabaseClient.auth
+      .signUp({
 
-      email: email,
+        email: email,
 
-      password: password
+        password: password,
 
-    });
+        options: {
+
+          data: {
+
+            birth_date:
+              birthDate,
+
+            phone:
+              phone || null
+
+          }
+
+        }
+
+      });
+
+
+  setLoading(false);
 
 
   if (error) {
 
-    message.textContent =
-      error.message;
+    console.error(error);
 
-    message.style.color =
-      "red";
+
+    showMessage(
+      error.message,
+      "error"
+    );
 
     return;
-  }
-
-
-  /* ===================================================
-     SALVA PROFILO
-  =================================================== */
-
-  if (data.user) {
-
-    const {
-      error: profileError
-    } =
-      await supabaseClient
-        .from("profiles")
-        .insert({
-
-          id: data.user.id,
-
-          birth_date: birthDate,
-
-          phone: phone || null
-
-        });
-
-
-    if (profileError) {
-
-      console.error(
-        "Errore profilo:",
-        profileError
-      );
-
-    }
 
   }
 
 
+
   /* ===================================================
-     ACCOUNT CREATO
+     RISULTATO REGISTRAZIONE
   =================================================== */
+
+  /*
+     Se la conferma email è attiva,
+     data.session può essere null.
+  */
 
   if (data.session) {
 
-    message.textContent =
-      "Account creato con successo!";
+    showMessage(
+      "Account creato con successo!",
+      "success"
+    );
 
-    message.style.color =
-      "green";
 
-    showShop(data.user);
+    showShop(
+      data.user
+    );
+
 
   } else {
 
-    message.textContent =
-      "Account creato! Controlla la tua email per confermare l'account.";
-
-    message.style.color =
-      "green";
+    showMessage(
+      "Account creato! Controlla la tua email e conferma l'account prima di accedere.",
+      "success"
+    );
 
   }
 
@@ -901,17 +1427,21 @@ async function handleAuth() {
 
 function showShop(user) {
 
-  document.getElementById("authPage")
-    .style.display =
+  document.getElementById(
+    "authPage"
+  ).style.display =
     "none";
 
-  document.getElementById("shopPage")
-    .style.display =
+
+  document.getElementById(
+    "shopPage"
+  ).style.display =
     "block";
 
 
-  document.getElementById("userEmail")
-    .textContent =
+  document.getElementById(
+    "userEmail"
+  ).textContent =
     user.email;
 
 }
@@ -919,17 +1449,20 @@ function showShop(user) {
 
 
 /* =====================================================
-   MOSTRA LOGIN
+   MOSTRA PAGINA LOGIN
 ===================================================== */
 
 function showLogin() {
 
-  document.getElementById("shopPage")
-    .style.display =
+  document.getElementById(
+    "shopPage"
+  ).style.display =
     "none";
 
-  document.getElementById("authPage")
-    .style.display =
+
+  document.getElementById(
+    "authPage"
+  ).style.display =
     "flex";
 
 }
@@ -942,15 +1475,46 @@ function showLogin() {
 
 async function logout() {
 
-  await supabaseClient.auth.signOut();
+  const {
+    error
+  } =
+    await supabaseClient.auth
+      .signOut();
+
+
+  if (error) {
+
+    console.error(error);
+
+    return;
+
+  }
+
 
   showLogin();
 
-  document.getElementById("email")
-    .value = "";
 
-  document.getElementById("password")
-    .value = "";
+  document.getElementById(
+    "email"
+  ).value = "";
+
+
+  document.getElementById(
+    "password"
+  ).value = "";
+
+
+  document.getElementById(
+    "birthDate"
+  ).value = "";
+
+
+  document.getElementById(
+    "phone"
+  ).value = "";
+
+
+  clearMessage();
 
 }
 
@@ -963,16 +1527,29 @@ async function logout() {
 async function checkSession() {
 
   const {
-    data: {
-      session
-    }
+    data,
+    error
   } =
-    await supabaseClient.auth.getSession();
+    await supabaseClient.auth
+      .getSession();
 
 
-  if (session) {
+  if (error) {
 
-    showShop(session.user);
+    console.error(error);
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  if (data.session) {
+
+    showShop(
+      data.session.user
+    );
 
   } else {
 
@@ -988,21 +1565,24 @@ async function checkSession() {
    CAMBIO SESSIONE
 ===================================================== */
 
-supabaseClient.auth.onAuthStateChange(
-  (event, session) => {
+supabaseClient.auth
+  .onAuthStateChange(
+    (event, session) => {
 
-    if (session) {
+      if (session) {
 
-      showShop(session.user);
+        showShop(
+          session.user
+        );
 
-    } else {
+      } else {
 
-      showLogin();
+        showLogin();
+
+      }
 
     }
-
-  }
-);
+  );
 
 
 
@@ -1010,10 +1590,10 @@ supabaseClient.auth.onAuthStateChange(
    CARRELLO
 ===================================================== */
 
-let cart = [];
-
-
-function addToCart(name, price) {
+function addToCart(
+  name,
+  price
+) {
 
   cart.push({
 
@@ -1024,8 +1604,9 @@ function addToCart(name, price) {
   });
 
 
-  document.getElementById("cartCount")
-    .textContent =
+  document.getElementById(
+    "cartCount"
+  ).textContent =
     cart.length;
 
 
@@ -1037,6 +1618,7 @@ function addToCart(name, price) {
 }
 
 
+
 function showCart() {
 
   if (cart.length === 0) {
@@ -1046,10 +1628,12 @@ function showCart() {
     );
 
     return;
+
   }
 
 
   let total = 0;
+
 
   let text =
     "CARRELLO\n\n";
@@ -1065,6 +1649,7 @@ function showCart() {
         " - €" +
         product.price.toFixed(2) +
         "\n";
+
 
       total +=
         product.price;
@@ -1093,4 +1678,5 @@ checkSession();
 </script>
 
 </body>
+
 </html>
